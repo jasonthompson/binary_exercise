@@ -1,49 +1,57 @@
-class BinaryNumber
-  attr_reader :value
+module BinaryConversion
+  DIGIT_VALUES ||= [128, 64, 32, 16, 8, 4, 2, 1]
 
-  DIGIT_VALUES = [128, 64, 32, 16, 8, 4, 2, 1]
+  class BinaryToDecimalConverter
+    attr_reader :value
 
-  def initialize(binary_num)
-    @value = binary_num.chars
-  end
-
-  def to_decimal
-    calculate_digits.reduce(:+)
-  end
-
-  private
-
-  def calculate_digits
-    value.map.with_index do |digit, i|
-      digit.to_i * DIGIT_VALUES[i]
+    def initialize(binary_num)
+      @value = binary_num
     end
-  end
-end
 
-class DecimalNumber
-  attr_reader :value
+    def convert
+      map_digits_to_values.reduce(:+)
+    end
 
-  DIGIT_VALUES = [128, 64, 32, 16, 8, 4, 2, 1]
+    private
 
-  def initialize(decimal_num)
-    @value = decimal_num
-  end
-
-  def to_binary
-    calculate_digits
-  end
-
-  def calculate_digits
-    accumulated_value = value
-    binary = ""
-    DIGIT_VALUES.each do |v|
-      if  accumulated_value >= v
-        binary << "1"
-        accumulated_value = accumulated_value - v
-      else
-        binary << "0"
+    def map_digits_to_values
+      binary_digits.map.with_index do |digit, v|
+        digit.to_i * DIGIT_VALUES[v]
       end
     end
-    binary
+
+    def binary_digits
+      value.chars
+    end
+  end
+
+  class DecimalToBinaryConverter 
+    attr_reader :value
+
+    def initialize(decimal_num)
+      @value = decimal_num.to_i
+    end
+
+    def convert 
+      map_values_to_digits.join
+    end
+
+    private
+
+    def zero_or_one(binary_value)
+      current_value ||= value
+      if current_value >= binary_value
+        current_value = current_value - binary_value
+        return "1"
+      else
+        return "0"
+      end
+    end
+
+    def map_values_to_digits
+      DIGIT_VALUES.map do |v|
+        zero_or_one(v)
+      end
+    end
   end
 end
