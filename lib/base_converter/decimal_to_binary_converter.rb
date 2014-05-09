@@ -2,8 +2,9 @@ require_relative 'converter'
 
 module BaseConverter
   class DecimalToBinaryConverter < Converter
-    def init
+    def post_initialization
       @current_value = value
+      @place_values = generate_place_values(value, @bit_length, 2)
     end
 
     def convert

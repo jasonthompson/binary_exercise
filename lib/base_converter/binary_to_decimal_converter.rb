@@ -2,6 +2,10 @@ require_relative './converter'
 
 module BaseConverter
   class BinaryToDecimalConverter < Converter
+    def post_initialization 
+      @place_values = generate_place_values(value, @bit_length, 2)
+    end
+
     def convert
       multiply_digits_by_place_values.reduce(:+)
     end

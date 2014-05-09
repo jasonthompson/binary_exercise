@@ -4,13 +4,16 @@ module BaseConverter
 
     def initialize(number, bit_length=nil)
       @value = number
-      bit_length ||= @value.length
-      @place_values = generate_place_values(@value, bit_length)
-      self.init if self.respond_to? :init
+      @bit_length = bit_length || value.length
+      post_initialization
     end
 
-    def generate_place_values(value, base)
-      (0...base).map {|i| 2**i}.reverse
+    def post_initialization
+      nil
+    end
+
+    def generate_place_values(value, bit_length, base)
+      (0...bit_length).map {|i| base**i}.reverse
     end
   end
 end
