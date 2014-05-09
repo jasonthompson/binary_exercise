@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 module BaseConverter 
   describe DecimalToBinaryConverter do
-    subject{DecimalToBinaryConverter.new(42)}
+    subject{DecimalToBinaryConverter.new(42, 8)}
 
     describe "#value" do
       it "returns the value of given number" do
